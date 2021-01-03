@@ -98,3 +98,6 @@ function showMyDB() {
 }
 
 showMyDB();
+
+console.log(Object.keys(personalMovieDB)); // создаем массив ключей объекта
+console.log(Object.keys(personalMovieDB).length); // считаем колличество ключей массива объекта
