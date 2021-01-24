@@ -142,15 +142,19 @@ window.addEventListener('DOMContentLoaded', () => {
         modal = document.querySelector('.modal'),
         modalCloseBtn = document.querySelector('[data-close]');
 
+    // функция открытия модального окна
+    function openModal() {
+        modal.classList.add('show');
+        modal.classList.remove('hide');
+        document.body.style.overflow = 'hidden';
+        clearInterval(modalTimerId);
+    }
+
     modalTrigger.forEach(btn => {
-        btn.addEventListener('click', () => {
-            modal.classList.add('show');
-            modal.classList.remove('hide');
-            // Либо вариант с toggle - но тогда назначить класс в верстке
-            document.body.style.overflow = 'hidden';
-        });
+        btn.addEventListener('click', () => openModal);
     });
 
+    // функция закрытия модального окна
     function closeModal() {
         modal.classList.add('hide');
         modal.classList.remove('show');
@@ -171,4 +175,19 @@ window.addEventListener('DOMContentLoaded', () => {
             closeModal();
         }
     });
+
+    // таймер модального окна
+    const modalTimerId = setTimeout(openModal, 3000); // 3 секунды
+
+    function showModalByScroll() {
+        // если прокрученная часть плюс видимая в данный момент часть равна высоте
+        // контента в элементе, т.е. пользователь долистал до конца траницы
+        if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+            openModal();
+            // удаление обработчика событий, после того как пользователь долистал до конца
+            // и показалось модальное окно
+            window.removeEventListener('scroll', showModalByScroll);
+        }
+    }
+    window.addEventListener('scroll', showModalByScroll);
 });
